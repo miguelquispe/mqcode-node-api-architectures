@@ -6,7 +6,9 @@
   "workspaces": [
     "architectures/*"
   ],
-  "scripts": {},
+  "scripts": {
+    "dev:clean": "npm --workspace architectures/clean-hexagonal run dev"
+  },
   "type": "module",
   "keywords": [],
   "license": "ISC",
