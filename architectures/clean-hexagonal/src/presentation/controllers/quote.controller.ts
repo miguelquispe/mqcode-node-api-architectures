@@ -32,12 +32,19 @@ export class QuoteController {
 
   get = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      // Logging contextual con pino-http
+      // Se agrega información relevante al contexto del log
+      req.log.info({ quoteId: req.params.id }, "Buscando cotización");
       const quote = await this.service.get(req.params.id);
       if (!quote) {
-        return res.status(404).json({ message: "Quote not found", status: 404 });
+        req.log.warn({ quoteId: req.params.id }, "Cotización no encontrada");
+        return res
+          .status(404)
+          .json({ message: "Cotización no encontrada", status: 404 });
       }
       res.json(quote);
     } catch (error) {
+      req.log.error({ error }, "Error al buscar cotización /quotes/:id");
       next(error);
     }
   };
@@ -46,7 +53,9 @@ export class QuoteController {
     try {
       const updated = await this.service.update(req.params.id, req.body);
       if (!updated) {
-        return res.status(404).json({ message: "Quote not found", status: 404 });
+        return res
+          .status(404)
+          .json({ message: "Quote not found", status: 404 });
       }
       res.json(updated);
     } catch (error) {
@@ -58,7 +67,9 @@ export class QuoteController {
     try {
       const deleted = await this.service.delete(req.params.id);
       if (!deleted) {
-        return res.status(404).json({ message: "Quote not found", status: 404 });
+        return res
+          .status(404)
+          .json({ message: "Quote not found", status: 404 });
       }
       res.status(204).send();
     } catch (error) {
