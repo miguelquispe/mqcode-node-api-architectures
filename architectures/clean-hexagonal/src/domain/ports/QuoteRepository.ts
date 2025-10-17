@@ -20,9 +20,11 @@ import { Quote } from "../entities/Quote";
  * en el dominio. Estas interfaces son implementadas por los adaptadores de salida.
  */
 
-// Port: QuoteRepository
+// Port: QuoteRepository (abstracción)
 // Puerto de salida para la gestión de cotizaciones
-// Define las operaciones que se pueden realizar con las cotizaciones
+// Define las operaciones que se pueden realizar con las cotizaciones (Contrato)
+// La implementación concreta (adaptador) puede variar (BD, archivo, etc)
+
 export interface QuoteRepository {
   findAll(): Promise<Quote[]>;
   findById(id: string): Promise<Quote | null>;
